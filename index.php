@@ -1,131 +1,21 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My first Blog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
+<?php
 
-  <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Blog</a>
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Factory\AppFactory;
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+require __DIR__ . '/vendor/autoload.php';
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+$app = AppFactory::create();
 
-  
-  <div class="container">
-   <h1 class="mb-3 mt-3">Welcome to my first Blog!</h1>
+$app->get('/', function (Request $request, Response $response, $args) {
+  $response->getBody()->write("Hello world!");
+  return $response;
+});
 
-    <div class="container-fluid d-flex flex-wrap gap-2 mb-2">
-        <div class="card" style="width: 18rem;">
-          <img src="https://dummyimage.com/300x200/8a4cb0/ffffff" class="card-img-top" alt="...">
+$app->get('/about', function (Request $request, Response $response, $args) {
+  $response->getBody()->write("About us!");
+  return $response;
+});
 
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-
-            <p class="card-text">
-              Some quick example text to build on the card title and make up
-              the bulk of the card’s content.
-            </p>
-
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <img src="https://dummyimage.com/300x200/8a4cb0/ffffff" class="card-img-top" alt="...">
-
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-
-            <p class="card-text">
-              Some quick example text to build on the card title and make up
-              the bulk of the card’s content.
-            </p>
-
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <img src="https://dummyimage.com/300x200/8a4cb0/ffffff" class="card-img-top" alt="...">
-
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-
-            <p class="card-text">
-              Some quick example text to build on the card title and make up
-              the bulk of the card’s content.
-            </p>
-
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-    </div>
-
-    <div class="container-fluid d-flex flex-wrap gap-2 mb-2">
-      <div class="card" style="width: 18rem;">
-        <img src="https://dummyimage.com/300x200/8a4cb0/ffffff" class="card-img-top" alt="...">
-
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-
-          <p class="card-text">
-            Some quick example text to build on the card title and make up
-            the bulk of the card’s content.
-          </p>
-
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
-      <div class="card" style="width: 18rem;">
-        <img src="https://dummyimage.com/300x200/8a4cb0/ffffff" class="card-img-top" alt="...">
-
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-
-          <p class="card-text">
-            Some quick example text to build on the card title and make up
-            the bulk of the card’s content.
-          </p>
-
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
-      <div class="card" style="width: 18rem;">
-        <img src="https://dummyimage.com/300x200/8a4cb0/ffffff" class="card-img-top" alt="...">
-
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-
-          <p class="card-text">
-            Some quick example text to build on the card title and make up
-            the bulk of the card’s content.
-          </p>
-
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
-</html>
+$app->run();

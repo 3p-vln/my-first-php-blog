@@ -1,0 +1,16 @@
+{
+    "name": "user/my-first-php-blog.local",
+    "description": "My first PHP Blog. Learning PHP",
+    "type": "project",
+    "authors": [
+        {
+            "name": "3p-vln",
+            "email": "vldknovak@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.8"
+    }
+}
