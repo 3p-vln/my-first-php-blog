@@ -3,36 +3,40 @@
 {% block body %}
 
     <div class="container">
-        <h1 class="mb-3 mt-3">Welcome to my first Blog!</h1>
+        <h2 class="mb-3 mt-3">Latest Posts</h2>
+        
+        <div class="row">
+            <div class="col-md-7">
+                {% for post in posts %}
+                    <div class="mb-3" style="border: 1px solid #ddd;">
+                        <div class="p-3">
+                            {% if post.image_path is not null %}
+                                <div style="aspect-ratio: 5 / 2;">
+                                    <img src="{{ post.image_path }}" class="img-fluid" alt="{{ post.title|escape }}" style="width: 100%; height: 100%; object-fit: cover">
+                                </div>
+                            {% endif %}
 
-        {% set rowCount = 1 %}
-        {% for post in posts %}
-            {# 1. Открываем обертку для каждых 3-х карточек #}
-            {% if rowCount == 1 %}
-                <div class="d-flex flex-wrap gap-3 mb-3">
-            {% endif %}
+                            <div class="mt-3">
+                                <a href="{{ post.url_key }}"><h5 class="card-title">{{ post.title|escape }}</h5></a>
+                                <p class="text-muted">Vladyslava Novak | {{ post.published_date|date("F d, Y") }}</p>
+                                <p class="mt-2">{{ post.description|escape }}</p>
+                                <a href="{{ post.url_key }}" class="btn btn-primary">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
 
-            <div class="card" style="width: 18rem;">
-                <img src="https://dummyimage.com/300x200/8a4cb0/ffffff" class="card-img-top" alt="{{ post.title|escape }}">
-
-                <div class="card-body">
-                    <a href="{{ post.url_key }}" class="card-title">{{ post.title|escape }}</a>
-                    <p class="card-text">{{ post.description|escape }}</p>
-                    <a href="{{ post.url_key }}" class="btn btn-primary">Read more</a>
+                <div class="row">
+                    <a href="blog">View all</a>
                 </div>
             </div>
-
-            {# 2. Закрываем обертку на 3-й карточке ИЛИ на последнем элементе списка #}
-            {% if rowCount == 3 or loop.last %}
+            <div class="col-md-5">
+                <div class="container">
+                    <h4>About</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in velit nec dui euismod vulputate quis et lectus. Nam finibus lacus sem, a sodales odio rutrum non. Fusce in placerat lorem. Aliquam eu sagittis nisi. Cras molestie odio non leo malesuada tincidunt. Donec lobortis tellus quis nulla efficitur condimentum. Vestibulum finibus dolor nisi, sit amet ultrices risus efficitur vitae. Sed enim tortor, convallis sit amet tincidunt et, fringilla id justo. Proin in nunc quis urna hendrerit bibendum ut eget risus. Pellentesque faucibus tellus vitae nisl feugiat scelerisque. Phasellus tincidunt diam vel tristique accumsan. Aenean convallis in ipsum in bibendum. Praesent rhoncus felis ante, ut aliquam orci auctor ac.</p>
                 </div>
-            {% endif %}
-
-            {# 3. Увеличиваем счетчик #}
-            {% set rowCount = rowCount + 1 %}
-            {% if rowCount > 3 %}
-                {% set rowCount = 1 %}
-            {% endif %}
-        {% endfor %}
+            </div>
+        </div>
     </div>
 
 {% endblock %}
