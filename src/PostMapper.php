@@ -26,15 +26,30 @@ class PostMapper
 		return array_shift($result);
 	}
 
-	public function getList(string $direction) : ?array
+	public function getList(int $page = 1, int $limit = 2, string $direction = 'ASC') : ?array
 	{
 		if (!in_array($direction, ['ASC', 'DESC'])) {
 			throw new Exception('Invalid direction');
 		}
-		$statement = $this->connection->prepare("SELECT * FROM post ORDER BY published_date " . $direction);
+
+		$start = ($page - 1) * $limit;
+
+		$statement = $this->connection->prepare(
+			"SELECT * FROM post ORDER BY published_date " . $direction .
+			" LIMIT " . $start . "," . $limit
+		);
 
 		$statement->execute();
 
 		return $statement->fetchAll();
+	}
+
+	public function getTotalCount() : int
+	{
+		$statement = $this->connection->prepare("SELECT COUNT(post_id) as total FROM post");
+
+		$statement->execute();
+
+		return (int) ($statement->fetchColumn() ?? 0);
 	}
 }

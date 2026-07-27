@@ -2,12 +2,12 @@
 
 use Blog\LatestPosts;
 use Blog\PostMapper;
+use Blog\Slim\TwigMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
-
 require __DIR__ . '/vendor/autoload.php';
 
 $loader = new FilesystemLoader('templates');
@@ -30,6 +30,8 @@ try {
 
 $app = AppFactory::create();
 
+$app->add(new TwigMiddleware($view));
+
 $app->get('/', function (Request $request, Response $response) use ($view, $connection) {
 	$latestPosts = new LatestPosts($connection);
 	$posts = $latestPosts->get(2);
@@ -48,6 +50,27 @@ $app->get('/about', function (Request $request, Response $response) use ($view) 
   ]);
   $response->getBody()->write($body);
   return $response;
+});
+
+$app->get('/blog[/{page}]', function (Request $request, Response $response, $args) use ($view, $connection) {
+	$postMapper = new PostMapper($connection);
+
+	$page = isset($args["page"]) ? (int) $args["page"] : 1;
+	$limit = 2;
+
+	$posts = $postMapper->getList($page, $limit, 'DESC');
+
+	$totalCount = $postMapper->getTotalCount();
+	$body = $view->render("blog.twig", [
+		'posts' => $posts,
+		'pagination' => [
+			'current' => $page,
+			'paging' => ceil($totalCount / $limit),
+		]
+	]);
+
+	$response->getBody()->write($body);
+	return $response;
 });
 
 $app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view, $connection) {
